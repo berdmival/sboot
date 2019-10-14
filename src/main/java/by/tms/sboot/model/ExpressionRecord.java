@@ -1,8 +1,6 @@
 package by.tms.sboot.model;
 
 import by.tms.sboot.action.ActionTypeEnum;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
