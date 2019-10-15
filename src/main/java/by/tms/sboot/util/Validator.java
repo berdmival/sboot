@@ -1,20 +1,24 @@
 package by.tms.sboot.util;
 
-import by.tms.sboot.action.ActionTypeEnum;
+import org.springframework.stereotype.Component;
 
+@Component("validator")
 public class Validator {
 
     public static boolean isValidAction(String input) {
-        for (ActionTypeEnum actionType : ActionTypeEnum.values()) {
-            if (actionType.toString().equals(input)) {
+        switch (input) {
+            case ("sum"):
+            case ("diff"):
+            case ("mult"):
+            case ("div"):
                 return true;
-            }
+            default:
+                return false;
         }
-        return false;
     }
 
-    public static boolean isValidDIV(Number num2, ActionTypeEnum actionTypeEnum) {
-        return !(actionTypeEnum.equals(ActionTypeEnum.DIV) & num2.doubleValue() == 0);
+    public static boolean isValidDIV(String num2, String actionType) {
+        return !(actionType.equals("div") & Double.parseDouble(num2) == 0);
     }
 
     public static boolean isNumeric(String str) {
@@ -42,5 +46,9 @@ public class Validator {
             }
         }
         return true;
+    }
+
+    public boolean validArgs(String num1, String num2, String actionType) {
+        return isNumeric(num1) && isNumeric(num2) && isValidAction(actionType) && isValidDIV(num2, actionType);
     }
 }
