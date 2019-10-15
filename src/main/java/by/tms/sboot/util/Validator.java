@@ -17,8 +17,8 @@ public class Validator {
         }
     }
 
-    public static boolean isValidDIV(String num2, String actionType) {
-        return !(actionType.equals("div") & Double.parseDouble(num2) == 0);
+    public static boolean isValidDIV(Double num2, String actionType) {
+        return !(actionType.equals("div") & num2 == 0);
     }
 
     public static boolean isNumeric(String str) {
@@ -48,7 +48,7 @@ public class Validator {
         return true;
     }
 
-    public boolean validArgs(String num1, String num2, String actionType) {
-        return isNumeric(num1) && isNumeric(num2) && isValidAction(actionType) && isValidDIV(num2, actionType);
+    public boolean validArgs(Double num1, Double num2, String actionType) {
+        return isValidAction(actionType) && isValidDIV(num2, actionType);
     }
 }

@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 public class ExpressionRecordImpl implements ExpressionRecord {
 
     @Value("${num1}")
-    private String num1;
+    private Double num1;
 
     @Value("${num2}")
-    private String num2;
+    private Double num2;
 
     @Value("${action}")
     private String actionType;
@@ -27,22 +27,19 @@ public class ExpressionRecordImpl implements ExpressionRecord {
     @Override
     public void calculate() {
         if (validator.validArgs(num1, num2, actionType)) {
-            Double num1d = Double.parseDouble(num1.replaceAll(",", "."));
-            Double num2d = Double.parseDouble(num2.replaceAll(",", "."));
-
             Double result;
             switch (actionType) {
                 case ("sum"):
-                    result = (Double) calcService.sum(num1d, num2d);
+                    result = (Double) calcService.sum(num1, num2);
                     break;
                 case ("diff"):
-                    result = (Double) calcService.diff(num1d, num2d);
+                    result = (Double) calcService.diff(num1, num2);
                     break;
                 case ("mult"):
-                    result = (Double) calcService.mult(num1d, num2d);
+                    result = (Double) calcService.mult(num1, num2);
                     break;
                 case ("div"):
-                    result = (Double) calcService.div(num1d, num2d);
+                    result = (Double) calcService.div(num1, num2);
                     break;
                 default:
                     result = null;
