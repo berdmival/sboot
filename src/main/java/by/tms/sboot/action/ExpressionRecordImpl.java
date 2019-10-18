@@ -9,20 +9,16 @@ import org.springframework.stereotype.Component;
 @Component("expressionRecord")
 public class ExpressionRecordImpl implements ExpressionRecord {
 
-    @Value("${num1}")
-    private Double num1;
-
-    @Value("${num2}")
-    private Double num2;
-
-    @Value("${action}")
-    private String actionType;
-
     @Autowired
     CalcService calcService;
-
     @Autowired
     Validator validator;
+    @Value("${num1}")
+    private Double num1;
+    @Value("${num2}")
+    private Double num2;
+    @Value("${action}")
+    private String actionType;
 
     @Override
     public void calculate() {

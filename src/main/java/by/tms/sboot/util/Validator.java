@@ -3,8 +3,6 @@ package by.tms.sboot.util;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 @Component("validator")
@@ -12,14 +10,6 @@ public class Validator {
 
     @Value("${actions}")
     private String[] actions;
-
-    private boolean isValidAction(String input) {
-        return Arrays.asList(actions).contains(input);
-    }
-
-    private boolean isValidDIV(Double num2, String actionType) {
-        return !(actionType.equals("div") & num2 == 0);
-    }
 
     public static boolean isNumeric(String str) {
         if (str == null) {
@@ -46,6 +36,14 @@ public class Validator {
             }
         }
         return true;
+    }
+
+    private boolean isValidAction(String input) {
+        return Arrays.asList(actions).contains(input);
+    }
+
+    private boolean isValidDIV(Double num2, String actionType) {
+        return !(actionType.equals("div") & num2 == 0);
     }
 
     public boolean validArgs(Double num1, Double num2, String actionType) {

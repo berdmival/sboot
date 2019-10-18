@@ -3,7 +3,7 @@ package by.tms.sboot.service;
 import org.springframework.stereotype.Service;
 
 @Service("calcService")
-public class CalcServiceImpl implements CalcService{
+public class CalcServiceImpl implements CalcService {
 
     @Override
     public Double sum(Number num1, Number num2) {
