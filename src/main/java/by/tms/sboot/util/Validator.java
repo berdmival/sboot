@@ -1,23 +1,23 @@
 package by.tms.sboot.util;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Component("validator")
 public class Validator {
 
-    public static boolean isValidAction(String input) {
-        switch (input) {
-            case ("sum"):
-            case ("diff"):
-            case ("mult"):
-            case ("div"):
-                return true;
-            default:
-                return false;
-        }
+    @Value("${actions}")
+    private String[] actions;
+
+    private boolean isValidAction(String input) {
+        return Arrays.asList(actions).contains(input);
     }
 
-    public static boolean isValidDIV(Double num2, String actionType) {
+    private boolean isValidDIV(Double num2, String actionType) {
         return !(actionType.equals("div") & num2 == 0);
     }
 
