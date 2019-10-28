@@ -43,7 +43,7 @@ public class Validator {
     }
 
     private boolean isValidDIV(Double num2, String actionType) {
-        return !(actionType.equals("div") & num2 == 0);
+        return !(actionType.equals("div") && num2 == 0);
     }
 
     public boolean validArgs(Double num1, Double num2, String actionType) {
