@@ -5,19 +5,15 @@ import by.tms.sboot.service.CalcService;
 import by.tms.sboot.service.HistoryService;
 import by.tms.sboot.util.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import java.util.List;
 
-@Controller
-@RequestMapping(path = "/calc")
+@RestController
 public class CalcController {
 
     @Autowired
@@ -27,48 +23,22 @@ public class CalcController {
     @Autowired
     private Validator validator;
 
-    @Value("${actions}")
-    private String[] actions;
+    @PostMapping(path = "/calc")
+    public ResponseEntity<ExpressionRecord> calculateExpression(@RequestBody ExpressionRecord expressionRecord) {
 
-    @GetMapping
-    public ModelAndView calcShow(ModelAndView modelAndView) {
-
-        modelAndView.setViewName("calc.html");
+        expressionRecord.setCalcService(calcService);
+        expressionRecord.setValidator(validator);
+        expressionRecord.calculate();
 
         if (historyService.getUserHistory(0) == null) {
             historyService.createHistoryForUser(0);
         }
-
-        modelAndView.addObject("history", historyService.getUserHistory(0));
-        modelAndView.addObject("expression", new ExpressionRecord());
-        modelAndView.addObject("actionType", actions);
-
-
-        return modelAndView;
+        historyService.addRecordForUsersHistory(0, expressionRecord);
+        return ResponseEntity.ok(expressionRecord);
     }
 
-    @PostMapping
-    public ModelAndView calcExpr(@Valid @ModelAttribute("expression") ExpressionRecord expression,
-                                 BindingResult bindingResult,
-                                 ModelAndView modelAndView
-    ) {
-
-        if (!bindingResult.hasErrors()) {
-            expression.setCalcService(calcService);
-            expression.setValidator(validator);
-            expression.calculate();
-            if (historyService.getUserHistory(0) == null) {
-                historyService.createHistoryForUser(0);
-            }
-            historyService.addRecordForUsersHistory(0, expression);
-            modelAndView.addObject("message", expression.getResult());
-            modelAndView.addObject("expression", new ExpressionRecord());
-        }
-
-        modelAndView.addObject("actionType", actions);
-        modelAndView.addObject("history", historyService.getUserHistory(0));
-
-        modelAndView.setViewName("calc.html");
-        return modelAndView;
+    @GetMapping(path = "/history")
+    public ResponseEntity<List<ExpressionRecord>> historyOfCalculating() {
+        return ResponseEntity.ok(historyService.getUserHistory(0));
     }
 }
